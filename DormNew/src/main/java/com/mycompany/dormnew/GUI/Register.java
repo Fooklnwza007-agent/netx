@@ -402,24 +402,7 @@ public class Register extends javax.swing.JFrame {
         return;
     }
     
-    try (java.io.FileWriter fw = new java.io.FileWriter("users.csv", true);
-         java.io.PrintWriter pw = new java.io.PrintWriter(fw)) {
-
-        // ถ้าไฟล์ว่าง ให้เขียนหัวคอลัมน์ก่อน
-        java.io.File file = new java.io.File("users.csv");
-        if (file.length() == 0) {
-            pw.println("Username,Email,Firstname,Lastname,Phone,Gender,Password");
-        }
-
-        // เขียนข้อมูลลง 1 บรรทัด
-        pw.printf("%s,%s,%s,%s,%s,%s,%s%n",
-                Username, Email, firstname, lastname, phone, gender, Password);
-
-        JOptionPane.showMessageDialog(this, "Register successful!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-    }
+    
 
     
 //    String gender;
