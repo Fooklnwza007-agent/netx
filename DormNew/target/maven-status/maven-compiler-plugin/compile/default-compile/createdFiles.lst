@@ -1,4 +1,5 @@
 com\mycompany\dormnew\GUI\Register$6.class
+com\mycompany\dormnew\GUI\Admin.class
 com\mycompany\dormnew\GUI\Register$5.class
 com\mycompany\dormnew\GUI\Register$7.class
 com\mycompany\dormnew\GUI\Login$1.class
@@ -12,3 +13,4 @@ com\mycompany\dormnew\GUI\Register$3.class
 com\mycompany\dormnew\GUI\Login.class
 com\mycompany\dormnew\GUI\Register$4.class
 com\mycompany\dormnew\GUI\Login$2.class
+com\mycompany\dormnew\GUI\User.class

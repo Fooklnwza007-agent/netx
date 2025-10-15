@@ -5,6 +5,8 @@
 
 package com.mycompany.dormnew.GUI;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author AVS_KTB
@@ -18,6 +20,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        setLocationRelativeTo(null); // แสดงตรงกลางจอ
     }
 
     /**
@@ -56,7 +59,7 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
         setBackground(new java.awt.Color(255, 255, 255));
-        setLocation(new java.awt.Point(700, 200));
+        setLocation(new java.awt.Point(0, 0));
         setResizable(false);
 
         Background.setBackground(new java.awt.Color(255, 255, 255));
@@ -192,7 +195,22 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_p1ActionPerformed
 
     private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
-        // TODO add your handling code here:
+        String Username = t1.getText().trim(); //tostring and delete Space
+        String Password = new String(p1.getPassword());
+        
+        if(Username.isEmpty() || Password.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Please complete all fields.", "WARNING", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if(Password.length() < 8){
+            JOptionPane.showMessageDialog(this, "Password must at least 8 characters.", "WARNING", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        
+        
+        
     }//GEN-LAST:event_BtnLoginActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

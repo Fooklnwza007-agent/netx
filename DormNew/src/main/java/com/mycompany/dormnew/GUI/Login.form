@@ -25,7 +25,7 @@
       <Color blue="ff" green="ff" red="ff" type="rgb"/>
     </Property>
     <Property name="location" type="java.awt.Point" editor="org.netbeans.beaninfo.editors.PointEditor">
-      <Point value="[700, 200]"/>
+      <Point value="[0, 0]"/>
     </Property>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>

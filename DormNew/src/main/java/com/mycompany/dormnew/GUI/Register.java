@@ -19,6 +19,7 @@ public class Register extends javax.swing.JFrame {
      */
     public Register() {
         initComponents();
+        setLocationRelativeTo(null); // แสดงตรงกลางจอ
     }
 
     /**
@@ -44,7 +45,6 @@ public class Register extends javax.swing.JFrame {
         p1 = new javax.swing.JPasswordField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        t5 = new javax.swing.JTextField();
         t3 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -57,10 +57,10 @@ public class Register extends javax.swing.JFrame {
         jB_Register = new javax.swing.JButton();
         ShowPassword1 = new javax.swing.JCheckBox();
         ShowPassword2 = new javax.swing.JCheckBox();
+        t5 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Register");
-        setLocation(new java.awt.Point(700, 200));
         setResizable(false);
 
         Background.setBackground(new java.awt.Color(255, 255, 255));
@@ -110,11 +110,6 @@ public class Register extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Gadugi", 0, 14)); // NOI18N
         jLabel7.setText("Phone Number");
-
-        t5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        t5.setToolTipText("");
-        t5.setActionCommand("<Not Set>");
-        t5.setDisabledTextColor(new java.awt.Color(255, 255, 255));
 
         t3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         t3.setToolTipText("");
@@ -185,6 +180,11 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
+        t5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        t5.setToolTipText("");
+        t5.setActionCommand("<Not Set>");
+        t5.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout BackgroundLayout = new javax.swing.GroupLayout(Background);
         Background.setLayout(BackgroundLayout);
         BackgroundLayout.setHorizontalGroup(
@@ -194,36 +194,24 @@ public class Register extends javax.swing.JFrame {
                 .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BackgroundLayout.createSequentialGroup()
                         .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(t1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(p1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(46, 46, 46)
-                        .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(BackgroundLayout.createSequentialGroup()
-                                .addComponent(p2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(t1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(47, 47, 47)
+                                .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(t2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(t3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(BackgroundLayout.createSequentialGroup()
+                                .addGap(516, 516, 516)
                                 .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(BackgroundLayout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel11))
-                                    .addComponent(t2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(BackgroundLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                                        .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel9)
-                                            .addComponent(t3, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(BackgroundLayout.createSequentialGroup()
-                                        .addGap(63, 63, 63)
-                                        .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel7)
-                                            .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(t4, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-                                                .addComponent(jLabel10)
-                                                .addComponent(t5)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
+                                    .addComponent(jLabel7)
+                                    .addComponent(t4, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10)
+                                    .addComponent(t5, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(59, 59, 59))
                     .addGroup(BackgroundLayout.createSequentialGroup()
                         .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -239,18 +227,23 @@ public class Register extends javax.swing.JFrame {
                                         .addComponent(MaleRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(FemaleRadio))
-                                    .addComponent(ShowPassword1))
+                                    .addComponent(ShowPassword1)
+                                    .addComponent(p1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3))
                                 .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(BackgroundLayout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jLabel6))
                                     .addGroup(BackgroundLayout.createSequentialGroup()
                                         .addGap(25, 25, 25)
-                                        .addComponent(ShowPassword2)
+                                        .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(p2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(ShowPassword2)
+                                            .addComponent(jLabel11))
                                         .addGap(0, 0, Short.MAX_VALUE)))))
                         .addGap(140, 140, 140))))
             .addGroup(BackgroundLayout.createSequentialGroup()
-                .addGap(257, 257, 257)
+                .addGap(248, 248, 248)
                 .addComponent(BrookingDorm)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(BackgroundLayout.createSequentialGroup()
@@ -270,26 +263,22 @@ public class Register extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BackgroundLayout.createSequentialGroup()
                         .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(t1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(t2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(BackgroundLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BackgroundLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18)
+                        .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)))
                     .addGroup(BackgroundLayout.createSequentialGroup()
                         .addGap(2, 2, 2)
                         .addComponent(t3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BackgroundLayout.createSequentialGroup()
@@ -298,10 +287,10 @@ public class Register extends javax.swing.JFrame {
                                 .addComponent(t4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel6))
                             .addGroup(BackgroundLayout.createSequentialGroup()
-                                .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(p1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(p2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -314,7 +303,7 @@ public class Register extends javax.swing.JFrame {
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(MaleRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(FemaleRadio))
-                        .addGap(54, 54, 54))
+                        .addGap(106, 106, 106))
                     .addGroup(BackgroundLayout.createSequentialGroup()
                         .addGap(95, 95, 95)
                         .addComponent(t5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -329,11 +318,16 @@ public class Register extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Background, javax.swing.GroupLayout.PREFERRED_SIZE, 834, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -357,17 +351,20 @@ public class Register extends javax.swing.JFrame {
     private void p2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_p2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_p2ActionPerformed
-
+    
+    
+    
     private void jB_RegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jB_RegisterActionPerformed
     String Username = t1.getText().trim(); //tostring and delete Space
     String Email = t2.getText().trim(); //tostring and delete Space
     String firstname = t3.getText().trim(); //tostring and delete Space
     String lastname = t4.getText().trim(); //tostring and delete Space
+    String phone = t5.getText().trim(); 
     String Password = new String(p1.getPassword());
     String comfirmPassword = new String(p2.getPassword());
         
     if(Username.isEmpty() || Email.isEmpty() || firstname.isEmpty() ||
-            lastname.isEmpty() || Password.isEmpty() || comfirmPassword.isEmpty() ){ //if not fill all
+            lastname.isEmpty() || Password.isEmpty() || comfirmPassword.isEmpty() || phone.isEmpty() ){ //if not fill all
         JOptionPane.showMessageDialog(this, "Please complete all fields.", "WARNING", JOptionPane.WARNING_MESSAGE);
         return;
     }
@@ -378,11 +375,59 @@ public class Register extends javax.swing.JFrame {
     }
     
     String gender;
-    if (MaleRadio.isSelected()) {
+    
+    if(MaleRadio.isSelected()){
         gender = "Male";
-    } else {
+    }else{
         gender = "Female";
-     }
+    }
+    
+    if(Password.length() < 8){
+        JOptionPane.showMessageDialog(this, "Password must at least 8 characters.", "WARNING", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    if(comfirmPassword.length() < 8){   
+        JOptionPane.showMessageDialog(this, "ComfirmPassword must at least 8 characters.", "WARNING", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    if(!Password.equals(comfirmPassword)){
+        JOptionPane.showMessageDialog(this, "Passwords do not match.", "WARNING", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    if (!phone.matches("\\d+")) {
+        JOptionPane.showMessageDialog(this, "Please enter numbers only.","WARNING", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    try (java.io.FileWriter fw = new java.io.FileWriter("users.csv", true);
+         java.io.PrintWriter pw = new java.io.PrintWriter(fw)) {
+
+        // ถ้าไฟล์ว่าง ให้เขียนหัวคอลัมน์ก่อน
+        java.io.File file = new java.io.File("users.csv");
+        if (file.length() == 0) {
+            pw.println("Username,Email,Firstname,Lastname,Phone,Gender,Password");
+        }
+
+        // เขียนข้อมูลลง 1 บรรทัด
+        pw.printf("%s,%s,%s,%s,%s,%s,%s%n",
+                Username, Email, firstname, lastname, phone, gender, Password);
+
+        JOptionPane.showMessageDialog(this, "Register successful!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+
+    
+//    String gender;
+//    if (MaleRadio.isSelected()) {
+//        gender = "Male";
+//    } else {
+//        gender = "Female";
+//     }
     }//GEN-LAST:event_jB_RegisterActionPerformed
 
     private void ShowPassword2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowPassword2ActionPerformed
