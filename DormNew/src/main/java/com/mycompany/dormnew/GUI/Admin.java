@@ -6,7 +6,9 @@ package com.mycompany.dormnew.GUI;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,13 +29,42 @@ public class Admin extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null); // แสดงตรงกลางจอ
         
-        requestModel = new DefaultTableModel(new String[]{"Block", "Room", "Firstname", "Lastname","Phone_num"}, 0);
+        requestModel = new DefaultTableModel(new String[]{"Block", "Room", "Firstname", "Lastname","Phone_num","status"}, 0);
             
         requestTable.setModel(requestModel);
+        loadCSV(requestModel, "src/main/java/com/mycompany/dormnew/File/requests.csv");
         
     }
     
+    private void loadCSV(DefaultTableModel model, String fileName) {
+        model.setRowCount(0);
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            br.readLine(); // skip header
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                model.addRow(data);
+            }
+        } catch (IOException e) {
+            System.out.println("ไม่พบไฟล์ " + fileName);
+        }
+    }
     
+    // 💾 ฟังก์ชันบันทึกกลับ CSV (ใช้ได้ทั้งสองตาราง)
+    private void saveCSV(DefaultTableModel model, String fileName) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(fileName))) {
+            for (int i = 0; i < model.getRowCount(); i++) {
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    pw.print(model.getValueAt(i, j));
+                    if (j < model.getColumnCount() - 1) pw.print(",");
+                }
+                pw.println();
+            }
+            JOptionPane.showMessageDialog(this, "บันทึก " + fileName + " เรียบร้อยแล้ว!");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "บันทึกไม่สำเร็จ: " + fileName);
+        }
+    }
     
 
     /**
@@ -54,6 +85,13 @@ public class Admin extends javax.swing.JFrame {
         Reject = new javax.swing.JButton();
         save_to_csv = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        requestTable1 = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        Approve1 = new javax.swing.JButton();
+        Reject1 = new javax.swing.JButton();
+        save_to_csv1 = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -64,18 +102,18 @@ public class Admin extends javax.swing.JFrame {
 
         requestTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Block", "room", "Firstname", "Lastname", "phone num."
+                "Block", "room", "Firstname", "Lastname", "phone num.", "statas"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, true, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -84,8 +122,8 @@ public class Admin extends javax.swing.JFrame {
         });
         requestTable.setGridColor(new java.awt.Color(255, 255, 255));
         requestTable.setRowHeight(35);
-        requestTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
-        requestTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        requestTable.setSelectionBackground(new java.awt.Color(153, 255, 255));
+        requestTable.setSelectionForeground(new java.awt.Color(0, 51, 51));
         jScrollPane1.setViewportView(requestTable);
         if (requestTable.getColumnModel().getColumnCount() > 0) {
             requestTable.getColumnModel().getColumn(0).setResizable(false);
@@ -93,6 +131,7 @@ public class Admin extends javax.swing.JFrame {
             requestTable.getColumnModel().getColumn(2).setResizable(false);
             requestTable.getColumnModel().getColumn(3).setResizable(false);
             requestTable.getColumnModel().getColumn(4).setResizable(false);
+            requestTable.getColumnModel().getColumn(5).setResizable(false);
         }
 
         adminText.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -106,53 +145,153 @@ public class Admin extends javax.swing.JFrame {
         });
 
         Reject.setText("Reject");
+        Reject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RejectActionPerformed(evt);
+            }
+        });
 
         save_to_csv.setText("Save Changes");
+        save_to_csv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                save_to_csvActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Logout");
+
+        requestTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Block", "room", "Firstname", "Lastname", "phone num."
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        requestTable1.setGridColor(new java.awt.Color(255, 255, 255));
+        requestTable1.setRowHeight(35);
+        requestTable1.setSelectionBackground(new java.awt.Color(153, 255, 255));
+        requestTable1.setSelectionForeground(new java.awt.Color(0, 51, 51));
+        jScrollPane2.setViewportView(requestTable1);
+        if (requestTable1.getColumnModel().getColumnCount() > 0) {
+            requestTable1.getColumnModel().getColumn(0).setResizable(false);
+            requestTable1.getColumnModel().getColumn(1).setResizable(false);
+            requestTable1.getColumnModel().getColumn(2).setResizable(false);
+            requestTable1.getColumnModel().getColumn(3).setResizable(false);
+            requestTable1.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setText("User In Dorm");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setText("User Request ");
+
+        Approve1.setText("Approve");
+        Approve1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Approve1ActionPerformed(evt);
+            }
+        });
+
+        Reject1.setText("Reject");
+        Reject1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Reject1ActionPerformed(evt);
+            }
+        });
+
+        save_to_csv1.setText("Save Changes");
+        save_to_csv1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                save_to_csv1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(Approve, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addComponent(adminText))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(237, 237, 237)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(Reject, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                        .addComponent(save_to_csv)
-                        .addGap(524, 524, 524))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(463, 463, 463))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(adminText)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(30, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(17, 17, 17))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(277, 277, 277))))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(Approve, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(75, 75, 75)
+                .addComponent(Reject, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(save_to_csv)
+                .addGap(154, 154, 154)
+                .addComponent(Approve1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
+                .addComponent(Reject1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(save_to_csv1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(adminText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(adminText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(33, 33, 33)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Approve, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Reject, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(save_to_csv, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(47, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(143, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Reject1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Approve1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(save_to_csv1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(save_to_csv, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Reject, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Approve, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(65, 65, 65))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -165,16 +304,45 @@ public class Admin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(46, 46, 46))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void ApproveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ApproveActionPerformed
-        // TODO add your handling code here:
+        int selected = requestTable.getSelectedRow();
+    if (selected != -1) {
+        requestTable.setValueAt("Approved", selected, 5 );
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "กรุณาเลือกคำขอก่อน");
+    }
     }//GEN-LAST:event_ApproveActionPerformed
+
+    private void RejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RejectActionPerformed
+        int selected = requestTable.getSelectedRow();
+    if (selected != -1) {
+        requestTable.setValueAt("Rejected", selected, 5);
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "กรุณาเลือกคำขอก่อน");
+    }
+    }//GEN-LAST:event_RejectActionPerformed
+
+    private void save_to_csvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_to_csvActionPerformed
+        saveCSV(requestModel, "src/main/java/com/mycompany/dormnew/File/User_admin.csv");
+    }//GEN-LAST:event_save_to_csvActionPerformed
+
+    private void Approve1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Approve1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Approve1ActionPerformed
+
+    private void Reject1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Reject1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Reject1ActionPerformed
+
+    private void save_to_csv1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_to_csv1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_save_to_csv1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,13 +371,20 @@ public class Admin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Approve;
+    private javax.swing.JButton Approve1;
     private javax.swing.JButton Reject;
+    private javax.swing.JButton Reject1;
     private javax.swing.JLabel adminText;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable requestTable;
+    private javax.swing.JTable requestTable1;
     private javax.swing.JButton save_to_csv;
+    private javax.swing.JButton save_to_csv1;
     // End of variables declaration//GEN-END:variables
 }
