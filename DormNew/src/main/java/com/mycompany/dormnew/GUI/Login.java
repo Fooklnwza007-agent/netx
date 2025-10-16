@@ -98,6 +98,7 @@ public class Login extends javax.swing.JFrame {
         });
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(102, 102, 255));
         jButton2.setText("Sign-in");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

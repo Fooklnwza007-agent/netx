@@ -14,7 +14,7 @@ import com.mycompany.dormnew.GUI.*;
 public class DormNew {
 
     public static void main(String[] args) {
-        Login login = new Login();
+        Admin login = new Admin();
         login.setVisible(true);
     }
 }
