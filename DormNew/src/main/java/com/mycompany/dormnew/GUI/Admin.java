@@ -4,6 +4,7 @@
  */
 package com.mycompany.dormnew.GUI;
 
+import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -21,7 +22,7 @@ public class Admin extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Admin.class.getName());
     
     
-    DefaultTableModel requestModel;
+    DefaultTableModel requestModel,UserModel;
     /**
      * Creates new form Admin
      */
@@ -29,15 +30,36 @@ public class Admin extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null); // แสดงตรงกลางจอ
         
-        requestModel = new DefaultTableModel(new String[]{"Block", "Room", "Firstname", "Lastname","Phone_num","status"}, 0);
-            
-        requestTable.setModel(requestModel);
-        loadCSV(requestModel, "src/main/java/com/mycompany/dormnew/File/requests.csv");
         
+        requestModel = new DefaultTableModel(new String[]{"Room", "Firstname", "Lastname","Phone_num","status"}, 0);
+        requestTable.setModel(requestModel);
+        UserModel = new DefaultTableModel(new String[]{"Room", "Firstname", "Lastname","Phone_num"}, 0);
+        userTable.setModel(UserModel);
+        
+        loadCSV(UserModel, "src/main/java/com/mycompany/dormnew/File/User_admin.csv");
+        
+        
+        //loadCSV(requestModel, "src/main/java/com/mycompany/dormnew/File/requests.csv");
+        loadDormList(); //load
     }
     
+    private void loadDormList() {
+    String filePath = "src/main/java/com/mycompany/dormnew/File/dormlist.csv";
+    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        String line;
+        DormSelect.removeAllItems();
+        while ((line = br.readLine()) != null) {
+            String[] data = line.split(",");
+            if (data.length > 0) {
+                DormSelect.addItem(data[0]); // ชื่อหออยู่คอลัมน์แรก
+            }
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Load dorm list failed!", "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+}
+    
     private void loadCSV(DefaultTableModel model, String fileName) {
-        model.setRowCount(0);
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             br.readLine(); // skip header
@@ -46,11 +68,11 @@ public class Admin extends javax.swing.JFrame {
                 model.addRow(data);
             }
         } catch (IOException e) {
-            System.out.println("ไม่พบไฟล์ " + fileName);
+            JOptionPane.showMessageDialog(this, "load Failed " + fileName, "WARNING", JOptionPane.WARNING_MESSAGE);
         }
     }
     
-    // 💾 ฟังก์ชันบันทึกกลับ CSV (ใช้ได้ทั้งสองตาราง)
+    // ฟังก์ชันบันทึกกลับ CSV (ใช้ได้ทั้งสองตาราง)
     private void saveCSV(DefaultTableModel model, String fileName) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(fileName))) {
             for (int i = 0; i < model.getRowCount(); i++) {
@@ -60,12 +82,30 @@ public class Admin extends javax.swing.JFrame {
                 }
                 pw.println();
             }
-            JOptionPane.showMessageDialog(this, "บันทึก " + fileName + " เรียบร้อยแล้ว!");
+            JOptionPane.showMessageDialog(this, "add Dorm : " + fileName + " Complete!");
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "บันทึกไม่สำเร็จ: " + fileName);
+            JOptionPane.showMessageDialog(this, "add Dorm : " + fileName + "failed");
         }
-    }
+        
+        
     
+    }
+    private void addDormToCSV(String dormName) {
+    String filePath = "src/main/java/com/mycompany/dormnew/File/Dormlist.csv";
+    try {
+        java.io.File file = new java.io.File(filePath);
+        if (!file.exists()) {
+            file.createNewFile(); //  สร้างไฟล์ใหม่ถ้ายังไม่มี
+        }
+
+        try (FileWriter fw = new FileWriter(file, true)) { // true = append mode
+            fw.write(dormName + "\n");
+        }
+
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "add failed: " + e.getMessage());
+    }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -86,12 +126,12 @@ public class Admin extends javax.swing.JFrame {
         save_to_csv = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        requestTable1 = new javax.swing.JTable();
+        userTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         Approve1 = new javax.swing.JButton();
         save_to_csv1 = new javax.swing.JButton();
-        dormSelect = new javax.swing.JComboBox<>();
+        DormSelect = new javax.swing.JComboBox<>();
         jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -154,7 +194,7 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
-        save_to_csv.setText("Save Changes");
+        save_to_csv.setText("Save To User in Dorm");
         save_to_csv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 save_to_csvActionPerformed(evt);
@@ -163,37 +203,36 @@ public class Admin extends javax.swing.JFrame {
 
         jButton1.setText("Logout");
 
-        requestTable1.setModel(new javax.swing.table.DefaultTableModel(
+        userTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Block", "room", "Firstname", "Lastname", "phone num."
+                "room", "Firstname", "Lastname", "phone num."
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        requestTable1.setGridColor(new java.awt.Color(255, 255, 255));
-        requestTable1.setRowHeight(35);
-        requestTable1.setSelectionBackground(new java.awt.Color(153, 255, 255));
-        requestTable1.setSelectionForeground(new java.awt.Color(0, 51, 51));
-        jScrollPane2.setViewportView(requestTable1);
-        if (requestTable1.getColumnModel().getColumnCount() > 0) {
-            requestTable1.getColumnModel().getColumn(0).setResizable(false);
-            requestTable1.getColumnModel().getColumn(1).setResizable(false);
-            requestTable1.getColumnModel().getColumn(2).setResizable(false);
-            requestTable1.getColumnModel().getColumn(3).setResizable(false);
-            requestTable1.getColumnModel().getColumn(4).setResizable(false);
+        userTable.setGridColor(new java.awt.Color(255, 255, 255));
+        userTable.setRowHeight(35);
+        userTable.setSelectionBackground(new java.awt.Color(153, 255, 255));
+        userTable.setSelectionForeground(new java.awt.Color(0, 51, 51));
+        jScrollPane2.setViewportView(userTable);
+        if (userTable.getColumnModel().getColumnCount() > 0) {
+            userTable.getColumnModel().getColumn(0).setResizable(false);
+            userTable.getColumnModel().getColumn(1).setResizable(false);
+            userTable.getColumnModel().getColumn(2).setResizable(false);
+            userTable.getColumnModel().getColumn(3).setResizable(false);
         }
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -217,14 +256,19 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
-        dormSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        dormSelect.addActionListener(new java.awt.event.ActionListener() {
+        DormSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        DormSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dormSelectActionPerformed(evt);
+                DormSelectActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Room");
+        jButton3.setText("RoomManage");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("addDorm");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -238,48 +282,47 @@ public class Admin extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(237, 237, 237)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 442, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(237, 237, 237)
-                                .addComponent(jLabel3))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(42, 42, 42)
-                                .addComponent(adminText)
-                                .addGap(91, 91, 91)
-                                .addComponent(dormSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(jButton2)
-                                .addGap(29, 29, 29)
-                                .addComponent(jButton3)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addGap(277, 277, 277))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(39, 39, 39))))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(105, 105, 105)
-                .addComponent(Approve, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(66, 66, 66)
+                .addComponent(Approve, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
                 .addComponent(Reject, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
+                .addGap(48, 48, 48)
                 .addComponent(save_to_csv)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Approve1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(66, 66, 66)
                 .addComponent(save_to_csv1)
                 .addGap(121, 121, 121))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(adminText)
+                        .addGap(91, 91, 91)
+                        .addComponent(DormSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(jButton2)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jButton3)
+                        .addContainerGap(500, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,9 +331,9 @@ public class Admin extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(adminText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dormSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2))
+                    .addComponent(DormSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -299,10 +342,10 @@ public class Admin extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(143, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Approve1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(save_to_csv1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -320,9 +363,9 @@ public class Admin extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -331,23 +374,34 @@ public class Admin extends javax.swing.JFrame {
     private void ApproveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ApproveActionPerformed
         int selected = requestTable.getSelectedRow();
     if (selected != -1) {
-        requestTable.setValueAt("Approved", selected, 5 );
+         String room = (String) requestTable.getValueAt(selected, 0);
+        String firstname = (String) requestTable.getValueAt(selected, 1);
+        String lastname = (String) requestTable.getValueAt(selected, 2);
+        String phone = (String) requestTable.getValueAt(selected, 3);
+        
+        // เพิ่มไป userTable
+        UserModel.addRow(new Object[]{room, firstname, lastname, phone});
+        
+        // ลบออกจาก requestTable!
+        requestModel.removeRow(selected);
     } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "กรุณาเลือกคำขอก่อน");
+        javax.swing.JOptionPane.showMessageDialog(this, "Plz select Approve or  Reject");
     }
     }//GEN-LAST:event_ApproveActionPerformed
 
     private void RejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RejectActionPerformed
         int selected = requestTable.getSelectedRow();
     if (selected != -1) {
-        requestTable.setValueAt("Rejected", selected, 5);
+        requestTable.setValueAt("Rejected", selected, 4);
     } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "กรุณาเลือกคำขอก่อน");
+        javax.swing.JOptionPane.showMessageDialog(this, "Rejected Error");
     }
     }//GEN-LAST:event_RejectActionPerformed
 
     private void save_to_csvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_to_csvActionPerformed
-        saveCSV(requestModel, "src/main/java/com/mycompany/dormnew/File/User_admin.csv");
+        saveCSV(requestModel, "src/main/java/com/mycompany/dormnew/File/requests.csv");
+        saveCSV(UserModel, "src/main/java/com/mycompany/dormnew/File/User_admin.csv");
+
     }//GEN-LAST:event_save_to_csvActionPerformed
 
     private void Approve1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Approve1ActionPerformed
@@ -365,22 +419,45 @@ public class Admin extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String dormName = JOptionPane.showInputDialog(this, "Add Dorm Name :");
     
-    if (dormName != null && !dormName.trim().isEmpty()) {
+    if (dormName != null && !dormName.trim().isEmpty()) {   
         addDormToCSV(dormName.trim());
-        dormSelect.addItem(dormName.trim());
+        DormSelect.addItem(dormName.trim());
         JOptionPane.showMessageDialog(this, "Add  \"" + dormName + "\" Complete!");
     } else {
         JOptionPane.showMessageDialog(this, "Add unComplete!");
     }
     }//GEN-LAST:event_jButton2ActionPerformed
-    private void addDormToCSV(String dormName) {
-    String filePath = "src/main/java/com/mycompany/dormnew/File/Dormlist.csv"; // ตำแหน่งไฟล์ CSV
-    try (FileWriter fw = new FileWriter(filePath, true)) { // true = append mode
-        fw.write(dormName +"\n");
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "error : " + e.getMessage());
+
+    private void DormSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DormSelectActionPerformed
+        String selectedDorm = (String) DormSelect.getSelectedItem();
+    if (selectedDorm != null && !selectedDorm.isEmpty()) {
+        String fileName = "src/main/java/com/mycompany/dormnew/File/requests_" 
+                          + selectedDorm.replaceAll("\\s+", "") + ".csv";
+        
+        // ลบข้อมูลเก่าก่อน
+        requestModel.setRowCount(0);
+        
+        java.io.File file = new java.io.File(fileName); 
+        if (!file.exists()) {
+            try (PrintWriter pw = new PrintWriter(file)) {//Create File.csv
+                // เขียน header ลงไฟล์
+                pw.println("Room,Firstname,Lastname,Phone_num,status");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Create file failed: " + fileName);
+            }
+        }
+        
+        loadCSV(requestModel, fileName);
     }
-}
+    }//GEN-LAST:event_DormSelectActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        RoomAdmin room = new RoomAdmin();
+        room.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+   
+
 
     
     /**
@@ -411,9 +488,9 @@ public class Admin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Approve;
     private javax.swing.JButton Approve1;
+    private javax.swing.JComboBox<String> DormSelect;
     private javax.swing.JButton Reject;
     private javax.swing.JLabel adminText;
-    private javax.swing.JComboBox<String> dormSelect;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -424,8 +501,8 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable requestTable;
-    private javax.swing.JTable requestTable1;
     private javax.swing.JButton save_to_csv;
     private javax.swing.JButton save_to_csv1;
+    private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables
 }
